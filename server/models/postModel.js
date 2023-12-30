@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
+const User = require('./userModel');
 
 const postSchema = new mongoose.Schema({
   username: {
-    type: mongoose.Schema.objectId,
+    type: mongoose.Schema.ObjectId,
     ref: 'User',
     required: [true, 'A post must belong to a user'],
   },
@@ -11,8 +12,7 @@ const postSchema = new mongoose.Schema({
     default: Date.now,
   },
   userPhoto: {
-    type: mongoose.Schema.objectId,
-    ref: 'User',
+    type: String,
   },
   category: {
     type: String,
@@ -32,6 +32,17 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please provide some content about the subject'],
   },
+});
+
+postSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'username',
+    select: 'username',
+  }).populate({
+    path: 'userPhoto',
+    select: 'photo',
+  });
+  next();
 });
 
 const Post = mongoose.model('Post', postSchema);

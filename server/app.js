@@ -8,7 +8,7 @@ const xss = require('xss-clean');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
-// const postRouter = require('./routes/postRoutes');
+const postRouter = require('./routes/postRoutes');
 const userRouter = require('./routes/userRoutes');
 
 const app = express();
@@ -42,8 +42,8 @@ app.use(express.static(`${__dirname}/public`));
 //   res.status(200).send('hello again BHC');
 // });
 
-// app.use('/api/v1/posts', postRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/posts', postRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
