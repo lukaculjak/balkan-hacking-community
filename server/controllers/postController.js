@@ -1,5 +1,7 @@
 const Post = require('../models/postModel');
+// const User = require('../models/userModel');
 const factory = require('./handlerFactory');
+// const catchAsync = require('../utils/catchAsync');
 
 exports.setUserIds = (req, res, next) => {
   if (!req.body.user) req.body.user = req.user.id;

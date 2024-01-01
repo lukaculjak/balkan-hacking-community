@@ -74,4 +74,5 @@ export const ButtonGroup = styled.div`
   gap: 1.2rem;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 1.5rem;
 `;
