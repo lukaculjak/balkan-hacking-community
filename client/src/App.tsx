@@ -1,5 +1,6 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useContext } from "react";
+import { UserProvider, UserContext } from "./contexts/UserContext";
 
 import GlobalStyles from "./styles/GlobalStyles";
 import SpinnerFullPage from "./components/SpinnerFullPage";
@@ -9,21 +10,31 @@ const Register = lazy(() => import("./pages/register/index"));
 const Home = lazy(() => import("./pages/home/index"));
 const PageNotFound = lazy(() => import("./pages/notFound"));
 
-const router = createBrowserRouter([
+const routerLogin = createBrowserRouter([
   { path: "/login", element: <Login /> },
   { path: "/register", element: <Register /> },
+  { path: "*", element: <PageNotFound /> },
+]);
+
+const routerAccess = createBrowserRouter([
   { path: "/home", element: <Home /> },
   { path: "*", element: <PageNotFound /> },
 ]);
 
 function App() {
+  const { isLoggedIn } = useContext(UserContext);
+
   return (
-    <>
+    <UserProvider>
       <GlobalStyles />
       <Suspense fallback={<SpinnerFullPage />}>
-        <RouterProvider router={router} />
+        {isLoggedIn ? (
+          <RouterProvider router={routerAccess} />
+        ) : (
+          <RouterProvider router={routerLogin} />
+        )}
       </Suspense>
-    </>
+    </UserProvider>
   );
 }
 
