@@ -1,32 +1,34 @@
-import {
-  createContext,
-  useState,
-  useEffect,
-  ReactNode,
-  Dispatch,
-  SetStateAction,
-} from "react";
+import { createContext, useState, useEffect, ReactNode } from "react";
 import axios from "axios";
 import React from "react";
 
 interface UserProviderProps {
   children: ReactNode;
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const UserContext = createContext({
-  email: "",
-  password: "",
-  isLoggedIn: false,
-  userDetails: undefined,
-  setEmail: Dispatch<SetStateAction<string>>,
-  setPassword: Dispatch<SetStateAction<string>>,
-});
+interface UserContextType {
+  email: string;
+  password: string;
+  userDetails: undefined;
+  setEmail: React.Dispatch<React.SetStateAction<string>>;
+  setPassword: React.Dispatch<React.SetStateAction<string>>;
+  loginUser: () => Promise<void>;
+  setFetch: React.Dispatch<React.SetStateAction<boolean>>;
+  token: string;
+}
 
-const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
+const UserContext = createContext<UserContextType | undefined>(undefined);
+
+const UserProvider: React.FC<UserProviderProps> = ({
+  children,
+  setIsLoggedIn,
+}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userDetails, setUserDetails] = useState(undefined);
+  const [fetch, setFetch] = useState(false);
+  const [token, setToken] = useState("");
 
   useEffect(() => {
     async function loginUser() {
@@ -39,16 +41,21 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             password,
           },
         });
-        console.log(res);
 
         // Set user details in state if login is successful
-        setUserDetails(res.data); // Assuming your user details are in res.data
+        setUserDetails(res.data.data.user); // Assuming your user details are in res.data
+        setToken(res.data.token);
         setIsLoggedIn(true);
       } catch (err) {
         if (axios.isAxiosError(err)) {
           console.log(err.response?.data);
+          setFetch(false);
+          setIsLoggedIn(false);
         } else {
           console.log(err);
+          setFetch(false);
+          setIsLoggedIn(false);
+          //TODO: OBRISI OVAJ ISLOGEDING
         }
       }
     }
@@ -59,12 +66,21 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     return () => {
       // Cleanup logic here, if needed
     };
-  }, [email, password]); // Include email and password in the dependency array if they are used inside the useEffect
+  }, [fetch]); // Include email and password in the dependency array if they are used inside the useEffect
+
+  const contextValue: UserContextType = {
+    email,
+    password,
+    userDetails,
+    setEmail,
+    setPassword,
+    loginUser: async () => {},
+    setFetch,
+    token,
+  };
 
   return (
-    <UserContext.Provider value={{ email, password, isLoggedIn, userDetails }}>
-      {children}
-    </UserContext.Provider>
+    <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>
   );
 };
 

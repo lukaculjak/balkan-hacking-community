@@ -2,11 +2,15 @@ import Logo from "../../ui/Logo";
 import LoginForm from "./components/LoginForm";
 import StyledLogin from "./style";
 
-function Login() {
+interface LoginProps {
+  isLoggedIn: boolean;
+}
+
+function Login({ isLoggedIn }: LoginProps) {
   return (
     <StyledLogin>
       <Logo />
-      <LoginForm />
+      <LoginForm isLoggedIn={isLoggedIn} />
     </StyledLogin>
   );
 }

@@ -9,7 +9,7 @@ import { PostInfoWrapper } from "../../style/Post-styles";
 
 interface PROPS {
   post: object;
-  FirstName: string;
+  username: string;
   LastName: string;
   Date: string;
   Category: string;
@@ -25,7 +25,7 @@ const PostItem: React.FC<PROPS> = ({ post }) => {
             <img src={defaultImg} alt="default-user-image" />
           </div>
           <div>
-            <Paragraph variant="text">{post.FirstName}</Paragraph>
+            <Paragraph variant="text">{post.username}</Paragraph>
             <Paragraph variant="text">{post.LastName}</Paragraph>
             <Paragraph variant="date">{post.Date}</Paragraph>
           </div>

@@ -1,62 +1,49 @@
-import { useState } from "react";
-import axios from "axios";
+import { useContext, useEffect } from "react";
+import { UserContext } from "./../../../contexts/UserContext";
 
 import styles from "../style/LoginForm.module.css";
+import SpinnerFullPage from "./../../../components/SpinnerFullPage";
+
 import { Input } from "../../../ui/Input";
 import { Button } from "../../../ui/Button";
 import { ButtonGroup } from "../../../ui/Button";
 import Form from "../../../ui/Form";
 import Paragraph from "./LoginParagraph";
+import { useNavigate } from "react-router-dom";
 
-const LoginForm: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+interface MyComponentProps {
+  isLoggedIn: boolean;
+}
 
-  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    setEmail(event.target.value);
+const LoginForm: React.FC<MyComponentProps> = ({ isLoggedIn }) => {
+  const userContext = useContext(UserContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      console.log("majda daj vadjajne");
+      navigate("/home");
+    }
+  }, [isLoggedIn]);
+
+  if (!userContext) {
+    return <SpinnerFullPage />;
+  }
+  const { setEmail, setPassword, setFetch } = userContext;
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setEmail(e.target.value);
   };
 
-  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    setPassword(event.target.value);
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setPassword(e.target.value);
   };
-
-  // const handleSubmit = async () => {
-  //   try {
-  //     const response = await axios.post("127.0.0.1:5000/api/v1/signin", {
-  //       email,
-  //       password,
-  //     });
-  //     console.log("papa franjo");
-
-  //     console.log(response.data);
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   }
-  // };
 
   const handleLogin = async (e: React.MouseEvent) => {
     e.preventDefault();
-    try {
-      const res = await axios({
-        method: "POST",
-        url: "http://127.0.0.1:5000/api/v1/users/login", // Corrected the URL format
-        data: {
-          email,
-          password,
-        },
-      });
-      console.log(res);
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        // Axios error
-        console.log(err.response?.data); // Access the error response data
-      } else {
-        // Non-Axios error
-        console.log(err);
-      }
-    }
+    setFetch(true);
   };
 
   return (

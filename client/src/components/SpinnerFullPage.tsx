@@ -7,7 +7,8 @@ const FullPageSpinner = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--color-grey-40);
+  /* background-color: var(--color-grey-40); */
+  background: linear-gradient(120deg, #14213d 0%, #1abc9c 100%);
 `;
 
 function SpinnerFullPage() {
