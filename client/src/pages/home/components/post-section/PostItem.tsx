@@ -7,16 +7,25 @@ import PostParagraph from "../../../../ui/PostParagraph";
 import { CategoryWrapper } from "../../style/Post-styles";
 import { PostInfoWrapper } from "../../style/Post-styles";
 
-interface PROPS {
-  post: object;
-  username: string;
-  LastName: string;
-  Date: string;
-  Category: string;
-  PostData: string;
+interface Post {
+  _id: string;
+  username: {
+    _id: string;
+    username: string;
+  };
+  category: string;
+  content: string;
+  createdAt: string;
 }
 
-const PostItem: React.FC<PROPS> = ({ post }) => {
+// Then, define the type for the PostItem component props
+interface PostItemProps {
+  post: Post;
+  key: string; // key is a reserved prop and does not need to be declared in props
+}
+
+const PostItem: React.FC<PostItemProps> = ({ post }) => {
+  console.log(post._id);
   return (
     <li>
       <PostItemWrapper>
@@ -25,15 +34,14 @@ const PostItem: React.FC<PROPS> = ({ post }) => {
             <img src={defaultImg} alt="default-user-image" />
           </div>
           <div>
-            <Paragraph variant="text">{post.username}</Paragraph>
-            <Paragraph variant="text">{post.LastName}</Paragraph>
-            <Paragraph variant="date">{post.Date}</Paragraph>
+            <Paragraph variant="text">{post.username.username}</Paragraph>
+            <Paragraph variant="date">{post.createdAt.split("T")[0]}</Paragraph>
           </div>
         </UserDetailsWrapper>
 
         <PostInfoWrapper>
-          <CategoryWrapper>{post.Category}</CategoryWrapper>
-          <PostParagraph>{post.PostData}</PostParagraph>
+          <CategoryWrapper>{post.category}</CategoryWrapper>
+          <PostParagraph>{post.content}</PostParagraph>
         </PostInfoWrapper>
       </PostItemWrapper>
     </li>

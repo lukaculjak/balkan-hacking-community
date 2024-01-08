@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { PostsLayout } from "../../style/Post-styles";
 import CreatePost from "./CreatePost";
 import { UserContext } from "./../../../../contexts/UserContext";
-import axios from "axios";
+// import axios from "axios";
 
 // const BASE_URL = "http://localhost:8000";
 
@@ -24,8 +24,7 @@ function Posts() {
           },
         });
         const data = await res.json();
-        setAllPosts(data);
-        console.log(data);
+        setAllPosts(data.data.data);
       } catch (error) {
         alert("Error loading posts from server");
       } finally {
@@ -39,11 +38,11 @@ function Posts() {
   return (
     <PostsLayout>
       <CreatePost />
-      {/* <ul>
+      <ul>
         {allPosts.map((post) => (
-          <PostItem post={post} key={post.id} />
+          <PostItem post={post} key={post._id} />
         ))}
-      </ul> */}
+      </ul>
     </PostsLayout>
   );
 }

@@ -10,7 +10,7 @@ interface UserProviderProps {
 interface UserContextType {
   email: string;
   password: string;
-  userDetails: undefined;
+  userDetails: object;
   setEmail: React.Dispatch<React.SetStateAction<string>>;
   setPassword: React.Dispatch<React.SetStateAction<string>>;
   loginUser: () => Promise<void>;

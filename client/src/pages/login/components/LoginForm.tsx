@@ -21,8 +21,9 @@ const LoginForm: React.FC<MyComponentProps> = ({ isLoggedIn }) => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      console.log("majda daj vadjajne");
       navigate("/home");
+    } else {
+      navigate("/login");
     }
   }, [isLoggedIn]);
 

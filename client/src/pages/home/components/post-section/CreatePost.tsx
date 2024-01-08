@@ -2,9 +2,13 @@ import { CreatePostButton } from "../../../../ui/Button";
 import { CreatePostInput } from "../../../../ui/Input";
 import { Select } from "../../../../ui/Select";
 import { CreatePostWrapper } from "../../style/Post-styles";
+import axios from "axios";
 
 function CreatePost() {
   return (
+    //post request sa username (koji prima _id),
+    //kategorija se uzima dinamicki kao i kontent
+
     <CreatePostWrapper>
       <CreatePostInput type="text" placeholder="Write your post here:" />
       <Select>

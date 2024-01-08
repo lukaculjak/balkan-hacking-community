@@ -9,7 +9,7 @@ const Paragraph = styled.p<ParagraphProps>`
 
   color: #fff;
   line-height: 1.1;
-  margin-bottom: 3px;
+  margin-bottom: 12px;
 `;
 
 export default Paragraph;
