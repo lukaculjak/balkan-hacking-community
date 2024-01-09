@@ -7,7 +7,7 @@ import { UserContext } from "./../../../../contexts/UserContext";
 
 // const BASE_URL = "http://localhost:8000";
 
-function Posts({ reload, setReload }) {
+function Posts({ reload, setReload, filter }) {
   const [allPosts, setAllPosts] = useState([]);
   const { token } = useContext(UserContext);
 
@@ -36,16 +36,18 @@ function Posts({ reload, setReload }) {
       }
       fetchPosts();
     },
-    [reload]
+    [reload, filter]
   );
 
   return (
     <PostsLayout>
       <CreatePost setReload={setReload} />
       <ul>
-        {allPosts.map((post) => (
-          <PostItem post={post} key={post._id} />
-        ))}
+        {allPosts
+          .filter((post) => (filter ? post.category === filter : true))
+          .map((post) => (
+            <PostItem post={post} key={post._id} />
+          ))}
       </ul>
     </PostsLayout>
   );

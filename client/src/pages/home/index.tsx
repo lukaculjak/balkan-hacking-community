@@ -6,11 +6,12 @@ import StyledHomepage from "./style";
 
 function Home() {
   const [reload, setReload] = useState(false);
+  const [filter, setFilter] = useState("");
   return (
     <StyledHomepage>
       <Profile />
-      <Posts reload={reload} setReload={setReload} />
-      <Filter />
+      <Posts reload={reload} setReload={setReload} filter={filter} />
+      <Filter setFilter={setFilter} />
     </StyledHomepage>
   );
 }
