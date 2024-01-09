@@ -25,7 +25,7 @@ interface PostItemProps {
 }
 
 const PostItem: React.FC<PostItemProps> = ({ post }) => {
-  console.log(post._id);
+  // console.log(post._id);
   return (
     <li>
       <PostItemWrapper>

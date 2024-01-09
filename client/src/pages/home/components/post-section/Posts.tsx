@@ -7,37 +7,41 @@ import { UserContext } from "./../../../../contexts/UserContext";
 
 // const BASE_URL = "http://localhost:8000";
 
-function Posts() {
+function Posts({ reload, setReload }) {
   const [allPosts, setAllPosts] = useState([]);
   const { token } = useContext(UserContext);
 
   // axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  useEffect(function () {
-    async function fetchPosts() {
-      try {
-        // TODO: set loading indicator to true;
-        const res = await fetch(`http://127.0.0.1:5000/api/v1/posts/`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-        const data = await res.json();
-        setAllPosts(data.data.data);
-      } catch (error) {
-        alert("Error loading posts from server");
-      } finally {
-        // TODO: set loading indicator to false;
-        console.log("finally");
+  useEffect(
+    function () {
+      async function fetchPosts() {
+        try {
+          // TODO: set loading indicator to true;
+          const res = await fetch(`http://127.0.0.1:5000/api/v1/posts/`, {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          });
+          const data = await res.json();
+          setAllPosts(data.data.data);
+          setReload(false);
+        } catch (error) {
+          alert("Error loading posts from server");
+        } finally {
+          // TODO: set loading indicator to false;
+          console.log("finally");
+        }
       }
-    }
-    fetchPosts();
-  }, []);
+      fetchPosts();
+    },
+    [reload]
+  );
 
   return (
     <PostsLayout>
-      <CreatePost />
+      <CreatePost setReload={setReload} />
       <ul>
         {allPosts.map((post) => (
           <PostItem post={post} key={post._id} />
